@@ -10,5 +10,19 @@ export default Ember.Controller.extend({
 	
 	isDisabled: Ember.computed('isValidText', 'isValidEmail', function(){
 		return !((this.get('isValidText') && this.get('isValidEmail')));
-	})
+	}),
+
+	actions: {
+		saveContact(){
+			let newContact = this.store.createRecord('contact', { email: this.get('emailAddress'), message: this.get('emailText')});
+ 			newContact.save().then((response) => {
+ 				this.set('emailAddress', '');
+ 				this.set('emailText', '');
+ 				this.set('saveContact', true);
+ 				Ember.run.later(() => {
+ 					this.set('saveContact', false)
+ 				}, 3000);	
+ 			});		
+		}
+	}
 });
