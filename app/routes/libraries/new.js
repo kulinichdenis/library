@@ -5,8 +5,7 @@ export default Ember.Route.extend({
 		return this.store.createRecord('library');
 	},
 
-	actions: {
-		
+	actions: {		
 		saveLibrary(newLibrary) {
 			newLibrary.save().then(() => this.transitionTo('libraries'))	
 		},
@@ -18,6 +17,4 @@ export default Ember.Route.extend({
 			}
 		}
 	}
-
-
 });
