@@ -11,10 +11,12 @@ Router.map(function() {
 
   this.route('admin', function() {
     this.route('invitation');
+    this.route('contact');
   });
 
   this.route('libraries', function(){
   	this.route('new');
+    this.route('edit', { path: '/:library_id/edit' });
   })
 });
 

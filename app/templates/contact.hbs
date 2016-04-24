@@ -3,8 +3,9 @@
 	<div class="alert alert-success text-center" role="alert">Your contact saved!</div>
 {{/if}}
 <br/>
-{{input type=email class="form-control" placeholder="Enter Email" value=emailAddress}}
+{{input type=email class="form-control" placeholder="Enter Email" value=model.email}}
 <br/>
-{{textarea class="form-control" placeholder="Your message. (At least 5 characters.)" rows="7" value=emailText}}
+{{textarea class="form-control" placeholder
+="Your message. (At least 5 characters.)" rows="7" value=model.message}}
 <br/>
-<button class="btn btn-primary" disabled={{isDisabled}} {{ action 'saveContact' }}>Send Message</button>
+<button class="btn btn-primary" disabled={{model.isDisabled}} {{ action 'saveContact' model}}>Send Message</button>
