@@ -1,11 +1,7 @@
-import Model from 'ember-data/model';
-import attr from 'ember-data/attr';
-import { belongsTo } from 'ember-data/relationships';
+import DS from 'ember-data';
 
-export default Model.extend({
-  title: attr('string'),
-  releaseYear: attr('date'),
-
-  library: belongsTo('library'),
-  author: belongsTo('author')
+export default DS.Model.extend({
+  title: DS.attr('string'),
+  library: DS.belongsTo('library')
+  // author: DS.belongsTo('author')
 });

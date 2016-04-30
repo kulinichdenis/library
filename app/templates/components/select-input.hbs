@@ -1,5 +1,5 @@
-{{#each libraries as |library|}}
-  <option value={{ library.id }}>
-    {{ library.name }}
-  </option>
-{{/each}}
+<select class={{class-name}} onChange={{action 'selectValue'}}>
+  {{#each libraries as |library| }}
+    <option value={{library.id}} >{{library.name}}</option>
+  {{/each}}  
+</select>
