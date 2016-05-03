@@ -29,4 +29,30 @@
 =======
 {{#link-to 'books.new' }}<a href="">New</a>{{/link-to}}
 <h1>Books</h1>
+<<<<<<< 4f5f251a4b00d5f0a6e360dce52484693243ebcb
 >>>>>>> add books save
+=======
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Book</th>
+			<th>Library</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each model as |book|}}
+			<tr>
+				<td>{{ book.title }}</td>
+				<td>{{ book.library.name }}</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
+
+<nav>
+  <ul class="pager">
+		{{#link-to (query-params  page=prevPage) tagName='li'	}}<a href="">Previous</a>{{/link-to}}
+		{{#link-to (query-params page=nextPage) tagName='li' }}<a href="">Next</a>{{/link-to}}
+  </ul>
+</nav>
+>>>>>>> add pagination
