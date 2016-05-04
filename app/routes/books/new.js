@@ -21,17 +21,17 @@ export default Ember.Route.extend({
 		saveBook(book) {
 			var id;
 			if(this.controller.get('library')) {
-				id = this.controller.get('library'); 
+				id = this.controller.get('library');
 			} else {
 				let libraries = this.controller.get('libraries');
-				id = libraries.get('firstObject').get('id'); 
+				id = libraries.get('firstObject').get('id');
 			}
-			
+
 			let library = this.store.peekRecord('library', id);
 			book.set('library', library);
-			library.get('books').pushObject(book);	
+			library.get('books').pushObject(book);
 			library.save();
 			book.save();
 		}
-	} 
+	}
 });

@@ -11,4 +11,5 @@ export default Model.extend({
   books: hasMany('books'),
 
   isValid: Ember.computed.notEmpty('name'),
+
 });
