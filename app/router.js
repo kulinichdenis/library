@@ -23,6 +23,8 @@ Router.map(function() {
   this.route('books', function() {
     this.route('new');
   });
+
+  this.route('authors'); 
 });
 
 export default Router;

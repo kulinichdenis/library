@@ -1,37 +1,5 @@
-<<<<<<< 389e8056e86b2bb3ca408a98fbbb477a30a04744
-<h1>test</h1>
-<table class="table table-bordered table-striped">
-  <thead>
-  <tr>
-    <th>
-      Book
-    </th>
-    <th class="vtop">Author</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  {{#each model as |book|}}
-    <tr>
-      <td>
-        {{ book.title }}
-      </td>
-      <td>
-        {{book.author.name }}
-      </td>
-      <td class="text-center">
-        <button class="btn btn-success" {{action 'deleteBook' book}}>Delete</button>
-      </td>
-    </tr>
-  {{/each}}
-  </tbody>
-</table>
-=======
 {{#link-to 'books.new' }}<a href="">New</a>{{/link-to}}
 <h1>Books</h1>
-<<<<<<< 4f5f251a4b00d5f0a6e360dce52484693243ebcb
->>>>>>> add books save
-=======
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -51,8 +19,7 @@
 
 <nav>
   <ul class="pager">
-		{{#link-to (query-params  page=prevPage) tagName='li'	}}<a href="">Previous</a>{{/link-to}}
-		{{#link-to (query-params page=nextPage) tagName='li' }}<a href="">Next</a>{{/link-to}}
+		{{#link-to (query-params  page=prevPage) tagName='li' disabled=prevButton	}}<a href="">Previous</a>{{/link-to}}
+		{{#link-to (query-params page=nextPage) tagName='li'  disabled=nextButton }}<a href="">Next</a>{{/link-to}}
   </ul>
 </nav>
->>>>>>> add pagination

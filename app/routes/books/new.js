@@ -9,8 +9,8 @@ export default Ember.Route.extend({
 	},
 
 	setupController(controller, model) {
-		controller.set('libraries', model.libraries),
-		controller.set('model', model.book)
+		this._super(controller, model.book);
+		controller.set('libraries', model.libraries);
 	},
 
 	actions: {
@@ -31,7 +31,7 @@ export default Ember.Route.extend({
 			book.set('library', library);
 			library.get('books').pushObject(book);
 			library.save();
-			book.save();
+			book.save().then(() => this.transitionTo('books	'));
 		}
 	}
 });

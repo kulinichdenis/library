@@ -2,77 +2,108 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 
-  // model() {
-  //   return this.store.findAll('book')
-  // },
-
-  // actions: {
-  //   deleteBook(book) {
-  //     book.get('author').then((prevAuthor) => {
-  //       prevAuthor.get('books').removeObject(book);
-  //       prevAuthor.save();
-  //     });
-
-  //     book.get('library').then((prevLibrary) => {
-  //       prevLibrary.get('books').removeObject(book);
-  //       prevLibrary.save();
-  //     });
-  //     book.destroyRecord();
-  //   }
-  // }
-
 	queryParams: {
 		page: { refreshModel: true },
 	},
 
-	limitToShow: 2, // use with one addition element 
+	limitToShow: 3,
 	prevBook: null,
 	nextBook: null,
-	directionLeft: true,
+	prevPageDisable: true,
+	nextPageDisable: true,
+	directionRight: true,
 	currentPage: 1,
+	currentBook: null,
+	middleDirection: 'left',
 
 	model(params) {
 		if (!params.page) {
 			return this.store.query('book', { orderBy: 'createdAt', limitToFirst: this.limitToShow});
 		}
 		
-		if(this.currentPage > parseInt(params.page)) {
+		if(this.currentPage > parseInt(params.page)) { 
 			this.currentPage = parseInt(params.page);
-			this.directionLeft = false;
-			this.nextBook = this.currentBook; 
+			this.directionRight = false;
 			return this.store.query('book', { orderBy: 'createdAt', endAt: this.prevBook, limitToFirst: this.limitToShow});
-		} else {
-			this.directionLeft = true;
-			this.currentPage = parseInt(params.page);
-			this.prevBook = this.currentBook;
+			
+		} else { 
+			this.directionRight = true;
+			this.currentPage = parseInt(params.page); 
 			return this.store.query('book', { orderBy: 'createdAt', startAt: this.nextBook, limitToFirst: this.limitToShow});
 		}
 	},
 
 	setupController(controller, model) {
-		
-		if(this.directionLeft) {
-			if(this.limitToShow === model.toArray().length) { // last item 
-			// 	this.nextBook = null;
-			// } else {
-				this.nextBook = model.popObject().get('createdAt');
-				this.currentBook = model.get('lastObject').get('createdAt');
-			}
-		} else {
-			if (this.limitToShow === model.toArray().length) {
-				// this.prevBook = null;
-			// } else {
-				this.prevBook = model.shiftObject().get('createdAt');
-				this.currentBook = model.get('firstObject').get('createdAt');
-			}
+		if (!Ember.isEmpty(model)){
+			if(this.directionRight && this.middleDirection === 'left') {
+				if(this.limitToShow === model.toArray().length) { 
+					this.prevBook = this.currentBook; 
+					this.nextBook = model.popObject().get('createdAt');
+					this.stepBook = model.get('firstObject').get('createdAt');
+					this.currentBook = model.get('lastObject').get('createdAt');
+					this.nextPageDisable = false;
+				} else {
+					this.prevBook = this.currentBook;
+					this.currentBook = model.get('lastObject').get('createdAt');
+					this.stepBook = model.get('firstObject').get('createdAt');		
+					this._disableButtons(false, true);
+				}
+			} else if(!this.directionRight && this.middleDirection === 'right') {
+				if (this.limitToShow === model.toArray().length) {
+					this.nextBook = this.currentBook;
+					this.prevBook = model.shiftObject().get('createdAt');
+					this.stepBook = model.get('lastObject').get('createdAt');
+					this.currentBook = model.get('firstObject').get('createdAt');
+					this._disableButtons(false, false);
+				} else {
+					this.nextBook = this.currentBook;
+					this.currentBook = model.get('lastObject').get('createdAt');
+					this.stepBook = this.currentBook;
+					this._disableButtons(true, false);
+				}
+			} else if(this.directionRight && this.middleDirection === 'right') { 
+				this.middleDirection = 'left';
+				if(this.limitToShow === model.toArray().length) { 
+					this.prevBook = this.stepBook; 
+					this.nextBook = model.popObject().get('createdAt'); 
+					this.stepBook = model.get('firstObject').get('createdAt');
+					this.currentBook = model.get('lastObject').get('createdAt');
+					this._disableButtons(true, false);
+				} else {
+					this.prevBook = this.stepBook;
+					this.currentBook = model.get('lastObject').get('createdAt');
+					this.stepBook = model.get('firstObject').get('createdAt');
+					this._disableButtons(false, true);
+				}
+			} else if(!this.directionRight && this.middleDirection === 'left') {
+				this.middleDirection = 'right';	
+				if (this.limitToShow === model.toArray().length) {
+					this.nextBook = this.stepBook;
+					this.prevBook = model.shiftObject().get('createdAt');
+					this.stepBook = model.get('lastObject').get('createdAt');
+					this.currentBook = model.get('firstObject').get('createdAt');
+					this._disableButtons(false, false);
+				} else {
+					this.nextBook = this.stepBook;
+					this.currentBook = model.get('firstObject').get('createdAt');
+					this.stepBook = model.get('lastObject').get('createdAt');
+					this._disableButtons(true, false);
+				}
+			}	
 		}
-	
-		this._super(controller, model);
 		
-		// controller.set('prevButton', this.currentPage === 1 ? true : false);
-		// controller.set('nextButton', this.nextBook ? false : true);
+		this._super(controller, model);
+
+		controller.set('prevButton',  this.prevPageDisable);
+		controller.set('nextButton', this.nextPageDisable);
 		controller.set('nextPage', this.currentPage + 1);
 		controller.set('prevPage', this.currentPage - 1);
-	}
+	},
+	
+	//private methods
 
+	_disableButtons(statPrev, statNext) {
+		this.prevPageDisable = statPrev;
+		this.nextPageDisable = statNext;
+	}
 });
