@@ -31,7 +31,7 @@ export default Ember.Route.extend({
 			book.set('library', library);
 			library.get('books').pushObject(book);
 			library.save();
-			book.save().then(() => this.transitionTo('books	'));
+			book.save().then(() => this.transitionTo('books'));
 		}
 	}
 });

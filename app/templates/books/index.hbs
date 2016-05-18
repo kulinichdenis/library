@@ -1,5 +1,15 @@
-{{#link-to 'books.new' }}<a href="">New</a>{{/link-to}}
-<h1>Books</h1>
+<div class="row">
+	<div class="col-lg-6">
+		{{#link-to 'books.new' class="btn btn-info"}}Create new book{{/link-to}}
+	</div>
+	<div class="col-lg-6">
+		<div class="input-group">
+		  <span class="input-group-addon">Filter</span>
+			{{input type="text" value=filtering class="form-control" placeholder="Filter by book name"}}
+		</div>
+	</div>
+</div>
+
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -8,7 +18,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		{{#each model as |book|}}
+		{{#each value as |book|}}
 			<tr>
 				<td>{{ book.title }}</td>
 				<td>{{ book.library.name }}</td>
@@ -16,7 +26,6 @@
 		{{/each}}
 	</tbody>
 </table>
-
 <nav>
   <ul class="pager">
 		{{#link-to (query-params  page=prevPage) tagName='li' disabled=prevButton	}}<a href="">Previous</a>{{/link-to}}
