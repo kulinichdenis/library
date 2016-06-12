@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 	filtering: '',
-	value: Ember.computed('model.@each.title', 'filtering', function(){
+	books: Ember.computed('model.@each.title', 'filtering', function(){
 		let result = this.get('model');
 		let filtering = this.get('filtering');
 		const regex = new RegExp((filtering), 'ig');
