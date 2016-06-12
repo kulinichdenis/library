@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 		page: { refreshModel: true },
 	},
 
-	limitToShow: 3,
+	limitToShow: 5,
 	prevBook: null,
 	nextBook: null,
 	prevPageDisable: true,
@@ -14,7 +14,7 @@ export default Ember.Route.extend({
 	directionRight: true,
 	currentPage: 1,
 	currentBook: null,
-	middleDirection: 'left',
+	spread: false,
 
 	model(params) {
 		if (!params.page) {
@@ -23,76 +23,47 @@ export default Ember.Route.extend({
 		
 		if(this.currentPage > parseInt(params.page)) { 
 			this.currentPage = parseInt(params.page);
-			this.directionRight = false;
+			this.spread = this.directionRight ? true : false ;	
+			this.directionRight = false;		
+			
 			return this.store.query('book', { orderBy: 'createdAt', endAt: this.prevBook, limitToFirst: this.limitToShow});
 			
-		} else { 
-			this.directionRight = true;
+		} else { 			
 			this.currentPage = parseInt(params.page); 
+			this.spread = !this.directionRight ? true : false;	
+			this.directionRight = true;
+			
 			return this.store.query('book', { orderBy: 'createdAt', startAt: this.nextBook, limitToFirst: this.limitToShow});
 		}
 	},
 
 	setupController(controller, model) {
 		if (!Ember.isEmpty(model)){
-			if (this.directionRight && this.middleDirection === 'left') {
-				if (this.limitToShow === model.toArray().length) { 
-						this.prevBook = this.currentBook; 
+			if (this.directionRight) {
+				if (this.limitToShow === model.toArray().length) {  
+						this.prevBook =  this.spread ? this.stepBook : this.currentBook;
 						this.nextBook = model.popObject().get('createdAt');
-						this.stepBook = model.get('firstObject').get('createdAt');
 						this.currentBook = model.get('lastObject').get('createdAt');
-						
+						this.stepBook = model.get('firstObject').get('createdAt');			
 						this.currentPage === 1 ? this._disableButtons(true, false) : this._disableButtons(false, false);
 				} else {
-					this.prevBook = this.currentBook;
-					this.currentBook = model.get('lastObject').get('createdAt');
+					this.prevBook = this.spread ? this.stepBook : this.currentBook;
 					this.stepBook = model.get('firstObject').get('createdAt');		
 					this._disableButtons(false, true);
 				}
-			} else if (!this.directionRight && this.middleDirection === 'right') {
+			} else  {
 				if (this.limitToShow === model.toArray().length) {
-					this.nextBook = this.currentBook;
+					this.nextBook =  this.spread ? this.stepBook : this.currentBook;
 					this.prevBook = model.shiftObject().get('createdAt');
-					this.stepBook = model.get('lastObject').get('createdAt');
 					this.currentBook = model.get('firstObject').get('createdAt');
+					this.stepBook = model.get('lastObject').get('createdAt');
 					this._disableButtons(false, false);
 				} else {
-					this.nextBook = this.currentBook;
-					this.currentBook = model.get('lastObject').get('createdAt');
-					this.stepBook = this.currentBook;
-					this._disableButtons(true, false);
-				}
-			} else if (this.directionRight && this.middleDirection === 'right') { 
-				this.middleDirection = 'left';
-				
-				if (this.limitToShow === model.toArray().length) { 
-					this.prevBook = this.stepBook; 
-					this.nextBook = model.popObject().get('createdAt'); 
-					this.stepBook = model.get('firstObject').get('createdAt');
-					this.currentBook = model.get('lastObject').get('createdAt');
-					this._disableButtons(true, false);
-				} else {
-					this.prevBook = this.stepBook;
-					this.currentBook = model.get('lastObject').get('createdAt');
-					this.stepBook = model.get('firstObject').get('createdAt');
-					this._disableButtons(false, true);
-				}
-			} else if (!this.directionRight && this.middleDirection === 'left') {
-				this.middleDirection = 'right';	
-
-				if (this.limitToShow === model.toArray().length) {
-					this.nextBook = this.stepBook;
-					this.prevBook = model.shiftObject().get('createdAt');
-					this.stepBook = model.get('lastObject').get('createdAt');
-					this.currentBook = model.get('firstObject').get('createdAt');
-					this._disableButtons(false, false);
-				} else {
-					this.nextBook = this.stepBook;
-					this.currentBook = model.get('firstObject').get('createdAt');
+					this.nextBook = this.spread ? this.stepBook : this.currentBook;
 					this.stepBook = model.get('lastObject').get('createdAt');
 					this._disableButtons(true, false);
 				}
-			}	
+			} 
 		}
 		
 		this._super(controller, model);
