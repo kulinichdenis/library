@@ -22,6 +22,7 @@
 			<tr>
 				<td>{{ book.title }}</td>
 				<td>{{ book.library.name }}</td>
+				<td><button {{ action 'deleteBook' book}}>Delete</button></td>
 			</tr>
 		{{/each}}
 	</tbody>
