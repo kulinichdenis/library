@@ -1,4 +1,6 @@
 @import 'bootstrap';
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
 
 body {
   padding-top: 20px;
@@ -18,4 +20,9 @@ html {
 
 .not-bold {
   font-weight: normal!important;
+}
+
+.ember-modal-dialog {
+  height: 400px;
+  width: 400px;
 }

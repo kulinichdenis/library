@@ -1,6 +1,7 @@
 <div class="row">
 	<div class="col-lg-6">
 		{{#link-to 'books.new' class="btn btn-info"}}Create new book{{/link-to}}
+		<button class="btn btn-info" {{ action 'showModal' }}>Modal</button>
 	</div>
 	<div class="col-lg-6">
 		<div class="input-group">
@@ -22,7 +23,7 @@
 			<tr>
 				<td>{{ book.title }}</td>
 				<td>{{ book.library.name }}</td>
-				<td><button {{ action 'deleteBook' book}}>Delete</button></td>
+				<td class="text-right"><button class="btn btn-danger" {{ action 'deleteBook' book}}>Delete</button></td>
 			</tr>
 		{{/each}}
 	</tbody>
@@ -33,3 +34,10 @@
 		{{#link-to (query-params page=nextPage) tagName='li'  disabled=nextButton }}<a href="">Next</a>{{/link-to}}
   </ul>
 </nav>
+{{#if isModal}}
+	{{#modal-dialog close="toggleModal" translucentOverlay=true}}
+		{{input type="text" value=bookName}}
+		{{select-input libraries=libraries action='selectLibrary'}}
+		<div class="btn btn-info" {{action 'buttonSubmit'}}>Submit</div>
+	{{/modal-dialog}}
+{{/if}}
