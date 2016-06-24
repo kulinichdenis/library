@@ -9,6 +9,5 @@ export default Model.extend({
   phone: attr('string'),
   books: hasMany('books'),
 
-  isValid: Ember.computed.notEmpty('name'),
-
+  isValid: Ember.computed.notEmpty('name')
 });

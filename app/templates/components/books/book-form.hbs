@@ -1,0 +1,5 @@
+{{#modal-window label='Edit' title="Book" closeModal='closeModal'}}
+  {{#books/book-item item=currentBook }}
+    {{ select-input collection=libraries match=currnetBook}}
+  {{/books/book-item}}
+{{/modal-window}}

@@ -1,5 +1,6 @@
-<select class={{class-name}} >
-  {{#each libraries as |library| }}
-    <option value={{library.id}} >{{library.name}}</option>
-  {{/each}}  
+<label for="">{{label}}</label>
+<select class="form-control">
+  {{#each libraries as |item| }}
+    <option selected={{item.isSelected}} value={{item.library.id}}>{{item.library.name}}</option>
+  {{/each}}
 </select>

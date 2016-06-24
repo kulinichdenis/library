@@ -1,0 +1,5 @@
+{{#modal-window closeModal='closeModal' submit='saveBook' title='New book' label='Save' item=newBook as |book| }}
+  {{#books/book-item item=book as |book|}}
+    {{ select-input label='Select Library' collection=libraries selected=book action='selectLibrary' }}
+  {{/books/book-item}}
+{{/modal-window }}

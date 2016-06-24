@@ -85,16 +85,25 @@ export default Ember.Route.extend({
 	},
 
 	actions: {
-		deleteBook(book){
-			book.get('library').then((library) => {
-				library.get('books').removeObject(book);
-				library.save();
+		showModal() {
+			this.get('controller').set('newBook', this.store.createRecord('book'));
+			this.render('components/books/book-create', { into: 'books/index', outlet: 'modal'})
+		},
+
+		closeModal() {
+			this.disconnectOutlet({
+				outlet: 'modal',
+				parentView: 'books/index'
 			})
-			book.destroyRecord();
+		},
+
+		showDetails(book) {
+			this.get('controller').set('currentBook', book);
+			this.render('components/books/book-form', { into: 'books/index', outlet: 'modal'})
 		}
 	},
-	//private methods
 
+	//private methods
 	_disableButtons(statPrev, statNext) {
 		this.prevPageDisable = statPrev;
 		this.nextPageDisable = statNext;
