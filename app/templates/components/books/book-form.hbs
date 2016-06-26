@@ -1,5 +1,5 @@
-{{#modal-window label='Edit' title="Book" closeModal='closeModal'}}
-  {{#books/book-item item=currentBook }}
-    {{ select-input collection=libraries match=currnetBook}}
+{{#modal-window label='Edit' title="Book" submit='saveBook' closeModal='closeModal' item=currentBook as |book| }}
+  {{#books/book-item item=book as |book|}}
+    {{ select-input collection=libraries selected=book.library label='Library' action='selectLibrary'}}
   {{/books/book-item}}
 {{/modal-window}}

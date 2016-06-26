@@ -1,3 +1,4 @@
+
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
@@ -14,11 +15,7 @@ export default Ember.Controller.extend({
 			return result;
 		}
 	}),
-
-	// libs: Ember.computed('libraries', function() {
-	// 	return this.get('libraries');
-	// }),
-
+	
 	actions: {
 		selectLibrary(id) {
 			this.set('library', id);

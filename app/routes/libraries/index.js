@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 	model() {
+		// alert('model');
 		return this.store.findAll('library');
 	},
 

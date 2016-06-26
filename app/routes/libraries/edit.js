@@ -20,6 +20,8 @@ export default Ember.Route.extend({
 
   actions: {
     saveLibrary(newLibrary) {
+      // let library = this.store.peekRecord('library', newLibrary.id);
+      // library.save();  
       newLibrary.save().then(() => this.transitionTo('libraries'));
     },
 
