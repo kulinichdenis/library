@@ -6,12 +6,18 @@ export default Ember.Controller.extend({
 
 	books: Ember.computed('model.@each.title', 'filtering', function(){
 		let result = this.get('model');
+
+		if (result.toArray().length === 4) {
+			this.set('nextButton', false);
+			this.set('nextBook', result.toArray()[3]);
+		}
+
 		let filtering = this.get('filtering');
 		const regex = new RegExp((filtering), 'ig');
 		if (filtering.length != 0) {
 			return result.filter((item) => item.get('title').match(regex));
 		} else {
-			return result;
+			return result.slice(0,3);
 		}
 	}),
 

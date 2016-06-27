@@ -12,6 +12,7 @@ export default Ember.Route.extend({
 		this._super(controller, model.book);
 		controller.set('libraries', model.libraries);
 	},
+
 	actions: {
 		selectLibrary(id) {
 			this.set('library', id);

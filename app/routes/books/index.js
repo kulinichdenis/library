@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 		page: { refreshModel: true },
 	},
 
-	limitToShow: 5,
+	limitToShow: 4,
 	prevBook: null,
 	nextBook: null,
 	prevPageDisable: true,
@@ -40,7 +40,7 @@ export default Ember.Route.extend({
 			this.directionRight = true;
 
 			return Ember.RSVP.hash({
-				books: this.store.query('book', { orderBy: 'createdAt', startAt: this.nextBook, limitToFirst: this.limitToShow}),
+				books: this.store.query('book', { orderBy: 'createdAt', startAt: this.get('controller').get('nextBook').get('createdAt') || this.nextBook, limitToFirst: this.limitToShow}),
 				libraries: this.store.findAll('library')
 			})
 		}
