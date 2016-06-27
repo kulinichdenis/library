@@ -7,7 +7,6 @@ export default Ember.Route.extend({
   },
 
   setupController: function (controller, model) {
-
     this._super(controller, model);
 
     controller.set('title', 'Edit library');
@@ -20,8 +19,6 @@ export default Ember.Route.extend({
 
   actions: {
     saveLibrary(newLibrary) {
-      // let library = this.store.peekRecord('library', newLibrary.id);
-      // library.save();  
       newLibrary.save().then(() => this.transitionTo('libraries'));
     },
 

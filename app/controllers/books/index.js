@@ -1,4 +1,3 @@
-
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
@@ -15,7 +14,7 @@ export default Ember.Controller.extend({
 			return result;
 		}
 	}),
-	
+
 	actions: {
 		selectLibrary(id) {
 			this.set('library', id);
@@ -28,9 +27,20 @@ export default Ember.Controller.extend({
 			} else {
 				library = this.get('libraries').get('firstObject');
 			}
-			book.set('library', library);
-			library.get('books').pushObject(book);
-			library.save();
+
+			if(!book.get('isNew')) {
+				book.get('library').then((prevLibrary) => {
+					prevLibrary.get('books').removeObject(book);
+					prevLibrary.save();
+				})
+			}
+
+			if(book.get('isNew') || this.get('library')) {
+				book.set('library', library);
+				library.get('books').pushObject(book);
+				library.save();
+			}
+
 			book.save().then((response) => {
 				this.set('library', '');
 			})
