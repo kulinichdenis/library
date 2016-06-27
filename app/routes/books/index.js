@@ -59,7 +59,7 @@ export default Ember.Route.extend({
 				} else {
 					this.prevBook = this.spread ? this.stepBook : this.currentBook;
 					this.stepBook = books.get('firstObject').get('createdAt');
-					this._disableButtons(false, true);
+					this.currentPage === 1 ? this._disableButtons(true, true) : this._disableButtons(false, true);
 				}
 			} else  {
 				if (this.limitToShow === books.toArray().length) {
