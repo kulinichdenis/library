@@ -7,9 +7,14 @@ export default Ember.Controller.extend({
 	books: Ember.computed('model.@each.title', 'filtering', function(){
 		let result = this.get('model');
 
-		if (result.toArray().length === 4) {
+		if (result.toArray().length === 4 && !this.get('nextBook')) {
 			this.set('nextButton', false);
 			this.set('nextBook', result.toArray()[3]);
+			this.set('prevBook', result.toArray()[2]);
+		}
+
+		if(result.toArray().length <= 3 && !this.get('nextBook')) {
+			//this.set('nextButton', true);
 		}
 
 		let filtering = this.get('filtering');

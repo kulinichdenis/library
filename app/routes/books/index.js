@@ -24,13 +24,13 @@ export default Ember.Route.extend({
 			})
 		}
 
-		if(this.currentPage > parseInt(params.page)) {
+		if (this.currentPage > parseInt(params.page)) {
 			this.currentPage = parseInt(params.page);
-			this.spread = this.directionRight ? true : false ;
+			this.spread = this.directionRight ? true : false;
 			this.directionRight = false;
 
 			return Ember.RSVP.hash({
-				books: this.store.query('book', { orderBy: 'createdAt', endAt: this.prevBook, limitToFirst: this.limitToShow}),
+				books: this.store.query('book', { orderBy: 'createdAt', endAt: (this.prevBook ? this.prevBook : this.get('controller').get('prevBook').get('createdAt')), limitToFirst: this.limitToShow}),
 				libraries: this.store.findAll('library')
 			})
 
@@ -40,7 +40,7 @@ export default Ember.Route.extend({
 			this.directionRight = true;
 
 			return Ember.RSVP.hash({
-				books: this.store.query('book', { orderBy: 'createdAt', startAt: this.get('controller').get('nextBook').get('createdAt') || this.nextBook, limitToFirst: this.limitToShow}),
+				books: this.store.query('book', { orderBy: 'createdAt', startAt: (this.nextBook ? this.nextBook : this.get('controller').get('nextBook').get('createdAt')), limitToFirst: this.limitToShow}),
 				libraries: this.store.findAll('library')
 			})
 		}
@@ -60,8 +60,9 @@ export default Ember.Route.extend({
 					this.prevBook = this.spread ? this.stepBook : this.currentBook;
 					this.stepBook = books.get('firstObject').get('createdAt');
 					this.currentPage === 1 ? this._disableButtons(true, true) : this._disableButtons(false, true);
+					debugger
 				}
-			} else  {
+			} else {
 				if (this.limitToShow === books.toArray().length) {
 					this.nextBook =  this.spread ? this.stepBook : this.currentBook;
 					this.prevBook = books.shiftObject().get('createdAt');
@@ -78,6 +79,7 @@ export default Ember.Route.extend({
 
 		this._super(controller, books);
 		controller.set('libraries', model.libraries);
+		controller.set('nextBook', this.nextBook ? true : false);
 		controller.set('prevButton',  this.prevPageDisable);
 		controller.set('nextButton', this.nextPageDisable);
 		controller.set('nextPage', this.currentPage + 1);
