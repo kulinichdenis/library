@@ -4,7 +4,13 @@ export default Ember.Component.extend({
   libraries: Ember.computed('collection.[]', function(){
     let sortedData = this.get('collection').sortBy('name');
     return sortedData.map((item) => {
-      return { library: item, isSelected: (item.get('id') === this.get('selected').get('id')) }
+      let selectLibrary;
+        if (this.get('selected')) {
+          selectLibrary = this.get('selected').get('id');
+        } else {
+          selectLibrary = 0;
+        }
+      return { library: item, isSelected: (item.get('id') === selectLibrary) }
     });
   }),
   change(event) {

@@ -6,15 +6,21 @@ export default Ember.Controller.extend({
 
 	books: Ember.computed('model.@each.title', 'filtering', function(){
 		let result = this.get('model');
+		console.log(result.toArray());
+		console.log(this.get('nextBook'));
 
-		if (result.toArray().length === 4 && !this.get('nextBook')) {
+		if(result.toArray().length === 4 && !this.get('nextBook')) {
 			this.set('nextButton', false);
 			this.set('nextBook', result.toArray()[3]);
 			this.set('prevBook', result.toArray()[2]);
 		}
 
 		if(result.toArray().length <= 3 && !this.get('nextBook')) {
-			//this.set('nextButton', true);
+			this.set('nextButton', true);
+		}
+
+		if(result.toArray().length === 0) {
+			this.set('stepBook', false);
 		}
 
 		let filtering = this.get('filtering');
@@ -55,6 +61,11 @@ export default Ember.Controller.extend({
 			book.save().then((response) => {
 				this.set('library', '');
 			})
+
+			if(!this.get('nextBook') && this.get('leftStep') ) {
+				this.set('nextBook', book);
+				this.set('nextButton', false);
+			}
 		},
 
 		deleteBook(book){

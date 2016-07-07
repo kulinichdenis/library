@@ -23,7 +23,7 @@ export default Ember.Route.extend({
 			if(this.get('library')) {
 				library = this.store.peekRecord('library', this.get('library'));
 			} else {
-				library = this.get('libraries').get('firstObject');
+				library = this.get('controller').get('libraries').get('firstObject');
 			}
 			book.set('library', library);
 			library.get('books').pushObject(book);
